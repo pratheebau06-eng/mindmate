@@ -1,140 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MindMate</title>
-
 <style>
-body {margin:0;font-family:Arial;background:#eef4ff;}
-
-header {
-    background:#4a6cff;
+body{
+    font-family: Arial;
+    margin:0;
+    background:#0f172a;
     color:white;
-    display:flex;
-    justify-content:space-between;
-    padding:15px 40px;
 }
-
-nav a {
-    color:white;
-    margin:10px;
-    text-decoration:none;
+section{
+    padding:60px;
+    text-align:center;
+}
+h1{
+    font-size:40px;
+    color:#38bdf8;
+}
+.card{
+    background:#1e293b;
+    padding:20px;
+    margin:15px;
+    border-radius:15px;
+    display:inline-block;
+    width:250px;
+}
+button{
+    padding:10px 20px;
+    border:none;
+    border-radius:20px;
+    background:#38bdf8;
     cursor:pointer;
 }
-
-section {padding:60px;text-align:center;}
-
-.hero {
-    background:linear-gradient(135deg,#4a6cff,#7f9cff);
-    color:white;
-    padding:100px 20px;
-}
-
-.features {
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-}
-
-.card {
-    background:white;
-    margin:15px;
-    padding:20px;
-    width:250px;
-    border-radius:12px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-/* Chat UI */
-.chatbox {
-    width:300px;
-    margin:auto;
-    background:white;
-    padding:10px;
-    border-radius:10px;
-}
-
-.chatbox input {
-    width:80%;
-    padding:5px;
-}
-
-/* Booking */
-input, button {
-    padding:10px;
-    margin:5px;
+#chatbox{
+    display:none;
+    margin-top:20px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-    <h2>MindMate</h2>
-    <nav>
-        <a onclick="show('home')">Home</a>
-        <a onclick="show('features')">Features</a>
-        <a onclick="show('chat')">Chat</a>
-        <a onclick="show('booking')">Book</a>
-    </nav>
-</header>
-
-<section id="home" class="hero">
-    <h1>Your Mental Health Companion 💙</h1>
-    <p>AI support + Real therapy + Stress relief</p>
+<!-- HERO -->
+<section>
+<h1>🧠 MindMate</h1>
+<p>Your AI-powered mental wellness companion</p>
+<button onclick="startChat()">Start Talking</button>
 </section>
 
-<section id="features">
-    <h2>Features</h2>
-    <div class="features">
-        <div class="card"><h3>AI Chatbot</h3><p>Instant help</p></div>
-        <div class="card"><h3>Mood Tracker</h3><p>Track emotions</p></div>
-        <div class="card"><h3>Therapists</h3><p>Book sessions</p></div>
-        <div class="card"><h3>E-Pets</h3><p>Feel better</p></div>
-    </div>
+<!-- PROBLEM -->
+<section>
+<h2>Problem</h2>
+<div class="card">Stress & Anxiety</div>
+<div class="card">No easy access to therapists</div>
+<div class="card">Social stigma</div>
+<div class="card">High cost</div>
 </section>
 
-<section id="chat" style="display:none;">
-    <h2>AI Chat Demo</h2>
-    <div class="chatbox">
-        <p id="chatlog">Bot: How are you feeling today?</p>
-        <input type="text" id="msg">
-        <button onclick="reply()">Send</button>
-    </div>
+<!-- FEATURES -->
+<section>
+<h2>Features</h2>
+<div class="card">🤖 AI Chat Support</div>
+<div class="card">📊 Mood Tracking</div>
+<div class="card">🎮 Stress Relief Games</div>
+<div class="card">👩‍⚕️ Therapist Booking</div>
 </section>
 
-<section id="booking" style="display:none;">
-    <h2>Book Counselor</h2>
-    <input placeholder="Your Name"><br>
-    <input placeholder="Select Date"><br>
-    <button onclick="alert('Appointment Booked!')">Book</button>
+<!-- DEMO CHAT -->
+<section id="chatbox">
+<h2>Talk to MindMate AI</h2>
+<input type="text" id="userInput" placeholder="Type how you feel..." style="padding:10px;width:250px;">
+<br><br>
+<button onclick="reply()">Send</button>
+<p id="response"></p>
 </section>
-
-<footer style="background:#222;color:white;padding:15px;">
-    © MindMate 2026
-</footer>
 
 <script>
-function show(section){
-    document.getElementById('home').style.display='none';
-    document.getElementById('features').style.display='none';
-    document.getElementById('chat').style.display='none';
-    document.getElementById('booking').style.display='none';
-
-    document.getElementById(section).style.display='block';
+function startChat(){
+    document.getElementById("chatbox").style.display="block";
 }
 
 function reply(){
-    let msg=document.getElementById('msg').value;
-    document.getElementById('chatlog').innerHTML += "<br>You: "+msg;
+    let input=document.getElementById("userInput").value.toLowerCase();
+    let response=document.getElementById("response");
 
-    let response="I'm here for you 💙";
-
-    if(msg.includes("stress")) response="Try deep breathing 😊";
-    if(msg.includes("sad")) response="You're not alone 💙";
-
-    document.getElementById('chatlog').innerHTML += "<br>Bot: "+response;
+    if(input.includes("sad")){
+        response.innerHTML="I'm here for you ❤️ Try taking a deep breath.";
+    }
+    else if(input.includes("stress")){
+        response.innerHTML="Let's relax. Try a short break or breathing exercise.";
+    }
+    else{
+        response.innerHTML="I'm listening... tell me more 😊";
+    }
 }
 </script>
 
