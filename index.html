@@ -3,96 +3,249 @@
 <head>
 <title>MindMate</title>
 <style>
-body{
-    font-family: Arial;
-    margin:0;
-    background:#0f172a;
-    color:white;
-}
-section{
-    padding:60px;
-    text-align:center;
-}
-h1{
-    font-size:40px;
-    color:#38bdf8;
-}
-.card{
-    background:#1e293b;
-    padding:20px;
-    margin:15px;
-    border-radius:15px;
-    display:inline-block;
-    width:250px;
-}
-button{
-    padding:10px 20px;
-    border:none;
-    border-radius:20px;
-    background:#38bdf8;
-    cursor:pointer;
-}
-#chatbox{
-    display:none;
-    margin-top:20px;
-}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; }
+  .mm-wrap { background: linear-gradient(160deg, #e0f2fe 0%, #f0f9ff 60%, #e8f4fd 100%); min-height: 100vh; color: #0c4a6e; }
+
+  .hero { padding: 64px 32px 48px; text-align: center; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: #bae6fd; color: #0369a1; font-size: 12px; font-weight: 500; padding: 4px 14px; border-radius: 99px; margin-bottom: 20px; }
+  .hero h1 { font-size: 42px; font-weight: 500; color: #0369a1; letter-spacing: -0.5px; margin-bottom: 12px; }
+  .hero p { font-size: 16px; color: #0c4a6e; opacity: 0.75; max-width: 420px; margin: 0 auto 32px; line-height: 1.6; }
+  .btn-primary { background: #0284c7; color: #fff; border: none; border-radius: 99px; padding: 13px 32px; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+  .btn-primary:hover { background: #0369a1; }
+  .btn-primary:active { transform: scale(0.97); }
+  .hero-stats { display: flex; justify-content: center; gap: 32px; margin-top: 40px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 500; color: #0284c7; }
+  .stat-label { font-size: 12px; color: #0c4a6e; opacity: 0.6; margin-top: 2px; }
+
+  .section { padding: 48px 32px; }
+  .section-title { text-align: center; font-size: 22px; font-weight: 500; color: #0369a1; margin-bottom: 8px; }
+  .section-sub { text-align: center; font-size: 14px; color: #0c4a6e; opacity: 0.6; margin-bottom: 32px; }
+  .divider { width: 48px; height: 3px; background: #7dd3fc; border-radius: 99px; margin: 10px auto 28px; }
+
+  .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; max-width: 760px; margin: 0 auto; }
+  .problem-card { background: #fff; border: 0.5px solid #bae6fd; border-radius: 14px; padding: 20px 16px; text-align: center; }
+  .problem-icon { font-size: 26px; margin-bottom: 10px; }
+  .problem-card h3 { font-size: 14px; font-weight: 500; color: #0369a1; margin-bottom: 6px; }
+  .problem-card p { font-size: 12px; color: #0c4a6e; opacity: 0.65; line-height: 1.5; }
+
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; max-width: 860px; margin: 0 auto; }
+  .feature-card { background: #fff; border: 0.5px solid #bae6fd; border-radius: 16px; padding: 24px 20px; position: relative; overflow: hidden; }
+  .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #7dd3fc; }
+  .feature-icon { width: 40px; height: 40px; border-radius: 10px; background: #e0f2fe; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 14px; }
+  .feature-card h3 { font-size: 14px; font-weight: 500; color: #0369a1; margin-bottom: 6px; }
+  .feature-card p { font-size: 12px; color: #0c4a6e; opacity: 0.65; line-height: 1.5; }
+
+  .chat-section { background: #fff; border-radius: 24px; max-width: 560px; margin: 0 auto; padding: 32px; border: 0.5px solid #bae6fd; box-shadow: 0 2px 24px rgba(2,132,199,0.07); }
+  .chat-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 0.5px solid #e0f2fe; }
+  .chat-avatar { width: 40px; height: 40px; border-radius: 50%; background: #0284c7; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 500; font-size: 14px; }
+  .chat-name { font-weight: 500; font-size: 15px; color: #0369a1; }
+  .chat-status { font-size: 12px; color: #0284c7; opacity: 0.7; }
+  .online-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #22c55e; margin-right: 4px; }
+  .messages { display: flex; flex-direction: column; gap: 12px; min-height: 120px; margin-bottom: 20px; }
+  .msg { max-width: 78%; padding: 10px 14px; border-radius: 16px; font-size: 14px; line-height: 1.5; }
+  .msg-bot { background: #e0f2fe; color: #0c4a6e; align-self: flex-start; border-bottom-left-radius: 4px; }
+  .msg-user { background: #0284c7; color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+  .chat-input-row { display: flex; gap: 10px; align-items: center; }
+  .chat-input { flex: 1; border: 0.5px solid #bae6fd; border-radius: 99px; padding: 10px 16px; font-size: 14px; color: #0c4a6e; background: #f0f9ff; outline: none; }
+  .chat-input:focus { border-color: #7dd3fc; background: #fff; }
+  .chat-send { width: 40px; height: 40px; border-radius: 50%; background: #0284c7; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
+  .chat-send:hover { background: #0369a1; }
+  .chat-send svg { width: 16px; height: 16px; fill: #fff; }
+  .typing { display: none; align-self: flex-start; padding: 10px 14px; background: #e0f2fe; border-radius: 16px; border-bottom-left-radius: 4px; }
+  .typing-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #7dd3fc; margin: 0 2px; animation: bounce 1.2s infinite; }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
+
+  .cta-section { padding: 56px 32px; text-align: center; }
+  .cta-box { background: #0284c7; border-radius: 20px; padding: 40px 32px; max-width: 500px; margin: 0 auto; color: #fff; }
+  .cta-box h2 { font-size: 22px; font-weight: 500; margin-bottom: 10px; }
+  .cta-box p { font-size: 14px; opacity: 0.85; margin-bottom: 24px; line-height: 1.6; }
+  .btn-white { background: #fff; color: #0284c7; border: none; border-radius: 99px; padding: 12px 28px; font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
+  .btn-white:hover { opacity: 0.9; }
 </style>
 </head>
-
 <body>
 
-<!-- HERO -->
-<section>
-<h1>🧠 MindMate</h1>
-<p>Your AI-powered mental wellness companion</p>
-<button onclick="startChat()">Start Talking</button>
-</section>
+<div class="mm-wrap">
 
-<!-- PROBLEM -->
-<section>
-<h2>Problem</h2>
-<div class="card">Stress & Anxiety</div>
-<div class="card">No easy access to therapists</div>
-<div class="card">Social stigma</div>
-<div class="card">High cost</div>
-</section>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span style="width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
+      AI-powered mental wellness
+    </div>
+    <h1>🧠 MindMate</h1>
+    <p>Your compassionate companion for mental well-being — available anytime, anywhere.</p>
+    <button class="btn-primary" onclick="document.getElementById('chat-demo').scrollIntoView({behavior:'smooth'})">Start Talking</button>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Always available</div></div>
+      <div class="stat"><div class="stat-num">10k+</div><div class="stat-label">People helped</div></div>
+      <div class="stat"><div class="stat-num">4.9</div><div class="stat-label">User rating</div></div>
+    </div>
+  </section>
 
-<!-- FEATURES -->
-<section>
-<h2>Features</h2>
-<div class="card">🤖 AI Chat Support</div>
-<div class="card">📊 Mood Tracking</div>
-<div class="card">🎮 Stress Relief Games</div>
-<div class="card">👩‍⚕️ Therapist Booking</div>
-</section>
+  <!-- PROBLEM -->
+  <section class="section">
+    <div class="section-title">What people struggle with</div>
+    <div class="divider"></div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-icon">😔</div>
+        <h3>Stress & Anxiety</h3>
+        <p>Daily pressures take a toll on mental health</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🏥</div>
+        <h3>Limited Access</h3>
+        <p>Therapists are hard to reach or fully booked</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🤫</div>
+        <h3>Social Stigma</h3>
+        <p>Fear of judgment stops people from seeking help</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">💸</div>
+        <h3>High Cost</h3>
+        <p>Therapy sessions can be unaffordable for many</p>
+      </div>
+    </div>
+  </section>
 
-<!-- DEMO CHAT -->
-<section id="chatbox">
-<h2>Talk to MindMate AI</h2>
-<input type="text" id="userInput" placeholder="Type how you feel..." style="padding:10px;width:250px;">
-<br><br>
-<button onclick="reply()">Send</button>
-<p id="response"></p>
-</section>
+  <!-- FEATURES -->
+  <section class="section" style="background: rgba(186,230,253,0.18);">
+    <div class="section-title">Everything you need</div>
+    <div class="divider"></div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>AI Chat Support</h3>
+        <p>Talk to an empathetic AI trained on mental wellness techniques and CBT</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Mood Tracking</h3>
+        <p>Log your emotions daily and spot patterns over time</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎮</div>
+        <h3>Stress Relief</h3>
+        <p>Breathing exercises and calming micro-games to unwind</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👩‍⚕️</div>
+        <h3>Therapist Booking</h3>
+        <p>Connect with certified therapists with one tap, no wait lists</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAT DEMO -->
+  <section class="section" id="chat-demo">
+    <div class="section-title">Try it now</div>
+    <div class="section-sub">Type how you feel and MindMate will respond</div>
+    <div class="chat-section">
+      <div class="chat-header">
+        <div class="chat-avatar">MM</div>
+        <div>
+          <div class="chat-name">MindMate AI</div>
+          <div class="chat-status"><span class="online-dot"></span>Online — ready to listen</div>
+        </div>
+      </div>
+      <div class="messages" id="messages">
+        <div class="msg msg-bot">Hi there 👋 I'm MindMate. How are you feeling today?</div>
+      </div>
+      <div class="typing" id="typing">
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="userInput" placeholder="Tell me how you feel..." onkeydown="if(event.key==='Enter')sendMsg()" />
+        <button class="chat-send" onclick="sendMsg()">
+          <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-box">
+      <h2>Your mental health matters</h2>
+      <p>Join thousands of people finding calm, clarity and support with MindMate every day.</p>
+      <button class="btn-white">Get started for free</button>
+    </div>
+  </section>
+
+</div>
 
 <script>
-function startChat(){
-    document.getElementById("chatbox").style.display="block";
+const responses = {
+  sad: [
+    "I'm really sorry you're feeling that way 💙 You're not alone in this. Want to talk about what's been going on?",
+    "It takes courage to share that. I'm here with you — take a deep breath. What's weighing on you most right now?"
+  ],
+  stress: [
+    "Stress can feel overwhelming. Let's try something — breathe in slowly for 4 counts, hold for 4, release for 4. Feel a little better? 🌊",
+    "When stress piles up, even small steps help. Would you like a quick breathing exercise or just want to vent?"
+  ],
+  anxious: [
+    "Anxiety can be so hard to carry. You're safe here. 💙 Can you tell me more about what's triggering it?",
+    "Let's slow things down together. Focus on 3 things you can see around you right now — it can help ground you."
+  ],
+  happy: [
+    "That's wonderful to hear! 😊 What's been making you feel good? Let's hold onto that feeling.",
+    "I love hearing that! Positive moments matter — what happened today?"
+  ],
+  lonely: [
+    "Feeling lonely is one of the hardest feelings. But reaching out — even here — is a meaningful step. I'm glad you're here 💙",
+    "You don't have to feel alone. I'm here to listen, any time, about anything."
+  ],
+  tired: [
+    "Exhaustion — physical or emotional — deserves attention. When did you last truly rest?",
+    "Being tired can make everything harder. Is it mostly physical tiredness or do you feel emotionally drained too?"
+  ],
+};
+
+const defaultReplies = [
+  "I'm here and listening. Tell me a little more — what's been on your mind?",
+  "Thank you for sharing that with me. I want to understand — can you say more? 💙",
+  "You're in a safe space here. Whatever you're feeling is valid.",
+];
+
+function addMsg(text, type) {
+  const div = document.createElement('div');
+  div.className = 'msg msg-' + type;
+  div.textContent = text;
+  document.getElementById('messages').appendChild(div);
+  div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-function reply(){
-    let input=document.getElementById("userInput").value.toLowerCase();
-    let response=document.getElementById("response");
-
-    if(input.includes("sad")){
-        response.innerHTML="I'm here for you ❤️ Try taking a deep breath.";
+function sendMsg() {
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
+  if (!text) return;
+  addMsg(text, 'user');
+  input.value = '';
+  const typing = document.getElementById('typing');
+  typing.style.display = 'flex';
+  typing.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  setTimeout(() => {
+    typing.style.display = 'none';
+    const lower = text.toLowerCase();
+    let reply = defaultReplies[Math.floor(Math.random() * defaultReplies.length)];
+    for (const [key, arr] of Object.entries(responses)) {
+      if (lower.includes(key)) {
+        reply = arr[Math.floor(Math.random() * arr.length)];
+        break;
+      }
     }
-    else if(input.includes("stress")){
-        response.innerHTML="Let's relax. Try a short break or breathing exercise.";
-    }
-    else{
-        response.innerHTML="I'm listening... tell me more 😊";
-    }
+    addMsg(reply, 'bot');
+  }, 1200);
 }
 </script>
 
